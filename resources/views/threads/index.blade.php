@@ -4,22 +4,17 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                <div class="panel panel-default">
-                    <div class="panel-heading">forum Threads</div>
-
-                    <div class="panel-body">
-                        @foreach($threads as $thread)
-                            <article>
-                                <a href="/threads/{{ $thread->id }}">
-                                    <h4>{{ $thread->title }}</h4>
-                                </a>
-                                <div class="body">{{ $thread->body }}</div>
-                            </article>
-
-                            <hr>
-                        @endforeach
+                @foreach($threads as $thread)
+                    <div>
+                        <h6 class="mb-0">
+                            <a href="/threads/{{ $thread->id }}">
+                                <h4>{{ $thread->title }}</h4>
+                            </a>
+                        </h6>
+                        <p class="mb-0 opacity-75">{{ $thread->body }}</p>
+                        <hr>
                     </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>
