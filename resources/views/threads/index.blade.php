@@ -7,7 +7,7 @@
                 @foreach($threads as $thread)
                     <div>
                         <h6 class="mb-0">
-                            <a href="/threads/{{ $thread->id }}">
+                            <a href="{{ $thread->path() }}">
                                 <h4>{{ $thread->title }}</h4>
                             </a>
                         </h6>

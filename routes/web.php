@@ -5,7 +5,6 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/threads', [ThreadsController::class, 'index']);
-
+Route::get('/threads/{thread}', [ThreadsController::class, 'show']);
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
