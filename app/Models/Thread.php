@@ -9,6 +9,12 @@ class Thread extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'user_id',
+        'title',
+        'body'
+    ];
+
     // 帖子的路径
     public function path()
     {

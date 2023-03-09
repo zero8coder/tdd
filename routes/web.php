@@ -8,5 +8,6 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 Route::get('/', [ThreadsController::class, 'index']);
 Route::get('/threads', [ThreadsController::class, 'index']);
+Route::post('/threads', [ThreadsController::class, 'store']);
 Route::get('/threads/{thread}', [ThreadsController::class, 'show']);
 Route::post('/threads/{thread}/replies', [RepliesController::class, 'store']);
