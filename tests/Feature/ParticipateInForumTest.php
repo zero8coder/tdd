@@ -33,7 +33,8 @@ class ParticipateInForumTest extends TestCase
     public function an_authenticated_user_may_participate_in_forum_threads()
     {
         // 登录用户
-        $this->be($user = User::factory()->create());
+        $user = User::factory()->create();
+        $this->signIn($user);
         // 一个帖子
         $thread = Thread::factory()->create();
         // 回复帖子
