@@ -19,9 +19,9 @@ class CreateThreadsTest extends TestCase
      */
     public function guests_may_not_create_threads()
     {
-        $thread = Thread::factory()->make();
-        $this->post('/threads', $thread->toArray())->assertStatus(302);
-        $this->get('/threads')->assertDontSee($thread->title);
+        $this->get('/threads/create')->assertRedirect('/login');
+        $this->post('/threads')->assertRedirect('/login');
+
     }
 
     /**
@@ -38,5 +38,14 @@ class CreateThreadsTest extends TestCase
         $this->get($thread->path())
             ->assertSee($thread->title)
             ->assertSee($thread->body);
+    }
+
+    /**
+     * @test
+     * 游客
+     */
+    public function guests_may_not_see_the_create_thread_page()
+    {
+        $this->get('/threads/create')->assertRedirect('/login');
     }
 }
