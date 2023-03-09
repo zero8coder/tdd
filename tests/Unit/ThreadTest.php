@@ -50,4 +50,23 @@ class ThreadTest extends TestCase
         $this->assertCount(1, $this->thread->replies);
     }
 
+    /**
+     * @test
+     * 一个帖子有一个频道
+     */
+    public function a_thread_belongs_to_a_channel()
+    {
+        $thread = Thread::factory()->create();
+        $this->assertInstanceOf('App\Models\Channel', $thread->channel);
+    }
+
+    /**
+     * @test
+     */
+    public function a_thread_can_make_a_string_path()
+    {
+        $thread = Thread::factory()->create();
+        $this->assertEquals("/threads/{$thread->channel->slug}/{$thread->id}", $thread->path());
+    }
+
 }
