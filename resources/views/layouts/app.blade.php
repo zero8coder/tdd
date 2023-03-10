@@ -38,7 +38,7 @@
                                 频道
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-                                @foreach(\App\Models\Channel::all() as $channel)
+                                @foreach($channels as $channel)
                                     <li><a  class="dropdown-item" href="/threads/{{ $channel->slug }}">{{ $channel->name }}</a> </li>
                                 @endforeach
                             </ul>

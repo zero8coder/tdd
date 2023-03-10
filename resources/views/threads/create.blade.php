@@ -14,7 +14,7 @@
                             <label class="form-label">频道</label>
                             <select name="channel_id" class="form-select" aria-label="Default select example" required>
                             <option selected>选择一个频道</option>
-                            @foreach ( \App\Models\Channel::all() as $channel)
+                            @foreach ( $channels as $channel)
                             <option value="{{ $channel->id }}">{{ $channel->name }}</option>
                             @endforeach
                         </select>
