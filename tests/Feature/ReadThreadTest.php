@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -69,6 +70,20 @@ class ReadThreadTest extends TestCase
         $this->get('/threads/' . $channel->slug)
             ->assertSee($threadInChannel->title)
             ->assertDontSee($threadNotInChannel->title);
+    }
+
+    /**
+     * @test
+     * 用户可以根据用户名筛选帖子
+     */
+    public function a_user_can_filter_threads_by_any_username()
+    {
+        $this->signIn(User::factory()->create(['name' => 'NoNo1']));
+        $threadByNoNo1 = Thread::factory()->create(['user_id' => auth()->id()]);
+        $threadNotbyNoNo1 = Thread::factory()->create();
+        $this->get('/threads?by=NoNo1')
+            ->assertSee($threadByNoNo1->title)
+            ->assertDontSee($threadNotbyNoNo1->title);
     }
 
 }
