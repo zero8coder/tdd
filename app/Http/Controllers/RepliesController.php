@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Reply;
 use App\Models\Thread;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class RepliesController extends Controller
 {
@@ -35,6 +36,7 @@ class RepliesController extends Controller
 
     public function store($channelId, Thread $thread)
     {
+        $this->validate(request(), ['body' => 'required']);
         $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()

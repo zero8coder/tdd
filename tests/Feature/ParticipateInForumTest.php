@@ -45,4 +45,18 @@ class ParticipateInForumTest extends TestCase
         $this->get($thread->path())
             ->assertSee($reply->body);
     }
+
+    /**
+     * @test
+     * 回复内容必填
+     */
+    public function a_reply_requires_a_body()
+    {
+        $this->signIn();
+        $thread = Thread::factory()->create();
+        $reply = Reply::factory()->make(['body' => null]);
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertSessionHasErrors('body');
+    }
+
 }
