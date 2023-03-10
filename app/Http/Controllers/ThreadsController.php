@@ -4,9 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Channel;
 use App\Models\Thread;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
+use App\Filters\ThreadsFilters;
 
 class ThreadsController extends Controller
 {
@@ -15,19 +14,21 @@ class ThreadsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index(Channel $channel)
+    public function index(Channel $channel, ThreadsFilters $filters)
     {
-        if ($channel->exists) {
-            $threads = $channel->threads()->latest();
-        } else {
-            $threads = Thread::latest();
-        }
-        if ($username = request('by')) {
-            $user = User::where('name', $username)->firstOrFail();
-            $threads->where('user_id', $user->id);
-        }
-        $threads = $threads->get();
+        $threads = $this->getThreads($channel, $filters);
         return view('threads.index', compact('threads'));
+    }
+
+    protected function getThreads(Channel $channel, ThreadsFilters $filters)
+    {
+        $threads = Thread::latest()->filter($filters);
+
+        if ($channel->exists) {
+            $threads = $threads->where('channel_id', $channel->id);
+        }
+
+        return $threads->get();
     }
 
     public function show($channelId, Thread $thread)
@@ -43,7 +44,7 @@ class ThreadsController extends Controller
             'channel_id' => 'required|exists:channels,id'
         ], [
             'channel_id.required' => '频道 必选',
-            'channel_id.exists' => '频道 不存在'
+            'channel_id.exists'   => '频道 不存在'
         ]);
 
         $thread = Thread::create([
