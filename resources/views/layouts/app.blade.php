@@ -43,6 +43,9 @@
                                 @endforeach
                             </ul>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/threads/create">发贴</a>
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

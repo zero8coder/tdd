@@ -35,6 +35,9 @@ class ThreadsController extends Controller
             'title'      => 'required',
             'body'       => 'required',
             'channel_id' => 'required|exists:channels,id'
+        ], [
+            'channel_id.required' => '频道 必选',
+            'channel_id.exists' => '频道 不存在'
         ]);
 
         $thread = Thread::create([
