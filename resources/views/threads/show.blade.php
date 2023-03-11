@@ -19,15 +19,18 @@
 
         <hr>
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                @foreach ($thread->replies as $reply)
+            <div class="col-8">
+                @foreach ($replies as $reply)
                    @include('threads.reply')
                     <hr>
                 @endforeach
             </div>
+            <div>
+                {{ $replies->links() }}
+            </div>
         </div>
 
-        @if( auth()->check())
+    @if( auth()->check())
             {{-- 已登录用户能看 --}}
             <div class="row">
                 <div class="mb-3">
@@ -43,5 +46,13 @@
         @else
             <p class="text-center">请先<a href="{{ route('login') }}">登录</a>，然后再发表回复 </p>
         @endif
+        <div class="mb-3">
+            <div class="mb-3">
+                <p>
+                    <a href="#">{{ $thread->creator->name }}</a> 发布于 {{ $thread->created_at->diffForHumans() }},
+                    当前共有 {{ $thread->replies()->count() }} 个回复。
+                </p>
+            </div>
+        </div>
     </div>
 @endsection

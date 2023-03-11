@@ -16,6 +16,15 @@ class Thread extends Model
         'body'
     ];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount',function ($builder){
+            $builder->withCount('replies');
+        });
+    }
+
     // 帖子的路径
     public function path()
     {
