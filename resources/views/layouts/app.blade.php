@@ -45,6 +45,9 @@
                             @if( auth()->check())
                             <li><a class="dropdown-item" href="/threads?by={{ auth()->user()->name }}">我的帖子</a></li>
                             @endif
+                            <li><a class="dropdown-item" href="/threads?popularity=1">热门帖子</a></li>
+
+
                         </ul>
                     </li>
                     <li class="nav-item dropdown">

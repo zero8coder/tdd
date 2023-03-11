@@ -86,4 +86,24 @@ class ReadThreadTest extends TestCase
             ->assertDontSee($threadNotbyNoNo1->title);
     }
 
+    /**
+     * @test
+     * 用户可以根据回复数来筛选帖子
+     */
+    public function a_user_can_filter_threads_by_popularity()
+    {
+        // 3个帖子
+        // 一个 0 回复 一个有2个回复 一个有3个回复
+        $thread = $this->thread;
+        $threadWithTwoReplies = Thread::factory()->create();
+        Reply::factory()->count(2)->create(['thread_id' => $threadWithTwoReplies->id]);
+        $threadWithThreeReplies = Thread::factory()->create();
+        Reply::factory()->count(3)->create(['thread_id' => $threadWithThreeReplies->id]);
+        // 根据回复数来筛选
+        $response = $this->getJson('/threads?popularity=1')->json();
+        // 回复数由多到少
+        $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+
+    }
+
 }
