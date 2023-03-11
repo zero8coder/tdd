@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class ParticipateInForumTest extends TestCase
 {
-    use DatabaseMigrations;
 
     /**
      * @test

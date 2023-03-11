@@ -10,7 +10,6 @@ use Tests\TestCase;
 
 class ChannelTest extends TestCase
 {
-    use DatabaseMigrations;
 
     /**
      * @test

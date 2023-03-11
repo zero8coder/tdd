@@ -13,7 +13,6 @@ use Tests\TestCase;
 
 class ReadThreadTest extends TestCase
 {
-    use DatabaseMigrations;
 
     protected  $thread;
 

@@ -12,7 +12,6 @@ use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
 {
-    use DatabaseMigrations;
 
     /**
      * @test

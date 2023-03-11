@@ -8,7 +8,6 @@ use Tests\TestCase;
 
 class ThreadTest extends TestCase
 {
-    use DatabaseMigrations;
 
     protected $thread;
 
