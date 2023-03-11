@@ -1,21 +1,20 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                @foreach($threads as $thread)
-                    <div>
-                        <h6 class="mb-0">
-                            <a href="{{ $thread->path() }}">
-                                <h4>{{ $thread->title }}</h4>
-                            </a>
-                        </h6>
-                        <p class="mb-0 opacity-75">{{ $thread->body }}</p>
-                        <hr>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </div>
+    <ol class="list-group">
+        @foreach($threads as $thread)
+
+            <li class="list-group-item d-flex justify-content-between align-items-start">
+                <div class="ms-2 me-auto">
+                    <div class="fw-bold"><a href="{{ $thread->path() }}">{{ $thread->title }}</a></div>
+                    {{ $thread->body }}
+                </div>
+                @if (!empty($thread->replies_count))
+                    <span class="badge bg-primary rounded-pill">
+                        {{$thread->replies_count}}
+                    </span>
+                @endif
+            </li>
+        @endforeach
+    </ol>
 @endsection
