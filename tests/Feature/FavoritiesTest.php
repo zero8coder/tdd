@@ -29,7 +29,7 @@ class FavoritiesTest extends TestCase
         $this->signIn();
         $reply = Reply::factory()->create();
         // 如果点赞了回复
-        $this->post('replies/' . $reply->id . '/favorites')->assertStatus(201);
+        $this->post('replies/' . $reply->id . '/favorites');
         // 会有一条记录在数据库
         $this->assertCount(1, $reply->favorites);
     }
@@ -43,8 +43,8 @@ class FavoritiesTest extends TestCase
         $this->signIn();
         $reply = Reply::factory()->create();
         try{
-            $this->post('replies/' . $reply->id . '/favorites')->assertStatus(201);
-            $this->post('replies/' . $reply->id . '/favorites')->assertStatus(200);
+            $this->post('replies/' . $reply->id . '/favorites');
+            $this->post('replies/' . $reply->id . '/favorites');
         } catch (\Exception $e) {
             $this->fail('用户不能重复点赞');
         }

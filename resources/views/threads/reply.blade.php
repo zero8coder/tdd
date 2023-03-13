@@ -14,7 +14,7 @@
             <button
                 class="btn btn-primary"
                 type="submit" {{$reply->isFavorited() ? 'disabled' : ''}}
-            >{{ $reply->favorites()->count() }}点赞</button>
+            >{{ $reply->favorites_count }}点赞</button>
         </form>
     </div>
 </li>
