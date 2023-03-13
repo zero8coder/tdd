@@ -42,4 +42,13 @@ class Reply extends Model
         }
         return false;
     }
+
+    /**
+     * 是否点赞过这个回复
+     * @return bool
+     */
+    public function isFavorited()
+    {
+        return $this->favorites()->where('user_id', auth()->id())->exists();
+    }
 }

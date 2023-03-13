@@ -19,10 +19,11 @@
 
         <hr>
         <div class="row">
-            <div class="col-8">
+            <div>
                 @foreach ($replies as $reply)
-                   @include('threads.reply')
+                    @include('threads.reply')
                     <hr>
+
                 @endforeach
             </div>
             <div>
@@ -30,7 +31,7 @@
             </div>
         </div>
 
-    @if( auth()->check())
+        @if( auth()->check())
             {{-- 已登录用户能看 --}}
             <div class="row">
                 <div class="mb-3">
