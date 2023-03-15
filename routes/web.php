@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\FavoritesController;
+use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\RepliesController;
 use App\Http\Controllers\ThreadsController;
 use Illuminate\Support\Facades\Auth;
@@ -15,4 +16,4 @@ Route::post('/threads/{channel}/{thread}/replies', [RepliesController::class, 's
 Route::get('/threads/{channel?}', [ThreadsController::class, 'index']);
 Route::post('/threads', [ThreadsController::class, 'store']);
 Route::post('/replies/{reply}/favorites', [FavoritesController::class, 'store']);
-//Route::resource('threads','ThreadsController');
+Route::get('/profiles/{user}', [ProfilesController::class, 'show'])->name('profile');

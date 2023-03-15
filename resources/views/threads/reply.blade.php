@@ -1,7 +1,7 @@
 <li class="list-group-item d-flex justify-content-between align-items-start">
     <div class="ms-2 me-auto">
         <div class="fw">
-            <a href="#">
+            <a href="{{ route('profile', $reply->owner->name) }}">
                 {{ $reply->owner->name }}
             </a>
             回复于 {{ $reply->created_at->diffForHumans() }}
