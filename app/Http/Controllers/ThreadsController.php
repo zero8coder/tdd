@@ -34,12 +34,22 @@ class ThreadsController extends Controller
         return $threads->get();
     }
 
-    public function show($channelId, Thread $thread)
+    public function show($channel, Thread $thread)
     {
         return view('threads.show', [
-            'thread' => $thread,
+            'thread'  => $thread,
             'replies' => $thread->replies()->paginate(15)
         ]);
+    }
+
+    public function destroy($channel, Thread $thread)
+    {
+        $this->authorize('update', $thread);
+        $thread->delete();
+        if (request()->wantsJson()) {
+            return response([], 204);
+        }
+        return redirect('/threads');
     }
 
     public function store(Request $request)
@@ -67,5 +77,6 @@ class ThreadsController extends Controller
     {
         return view('threads.create');
     }
+
 
 }

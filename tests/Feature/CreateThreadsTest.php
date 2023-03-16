@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Channel;
+use App\Models\Reply;
 use App\Models\Thread;
 use Tests\TestCase;
 
@@ -86,5 +87,32 @@ class CreateThreadsTest extends TestCase
         $this->publishThread(['channel_id' => 999])
             ->assertSessionHasErrors('channel_id');
 
+    }
+
+    /**
+     * @test
+     * 登录用户可以删除自己的帖子
+     */
+    public function authorized_users_can_delete_threads()
+    {
+        $this->signIn();
+        $thread = Thread::factory()->create(['user_id' => auth()->id()]);
+        $reply = Reply::factory()->create(['thread_id' => $thread->id]);
+        $response = $this->json('DELETE', $thread->path());
+        $response->assertStatus(204);
+        $this->assertDatabaseMissing('threads', ['id' => $thread->id]);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+    /**
+     * @test
+     * 未授权用户不能删除帖子
+     */
+    public function unauthorized_users_may_not_delete_threads()
+    {
+        $thread = Thread::factory()->create();
+        $this->delete($thread->path())->assertRedirect('/login');
+        $this->signIn();
+        $this->delete($thread->path())->assertStatus(403);
     }
 }

@@ -8,11 +8,21 @@
                     <div>
                         <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> 发表了：
                         {{ $thread->title }}
+                        @can('update',$thread)
+                            <form action="{{ $thread->path() }}" method="POST">
+                                {{ csrf_field() }}
+                                {{ method_field('DELETE') }}
+
+                                <button type="submit" class="btn btn-link">删除</button>
+                            </form>
+                        @endcan
                     </div>
 
                     <div>
                         {{ $thread->body }}
                     </div>
+
+
                 </div>
             </div>
         </div>
