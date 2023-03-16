@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
-    use HasFactory;
+    use HasFactory, RecordsActivity;
 
     protected $fillable = [
         'user_id',
@@ -30,6 +30,7 @@ class Thread extends Model
         static::deleting(function ($thread) {
             $thread->replies()->delete();
         });
+
     }
 
     // 帖子的路径
