@@ -14,4 +14,10 @@ APP_URL=http://tdd.test
 .
 DB_DATABASE=tdd
 ```
+运行命令
+```
+ $ composer install
+ $ php artisan key:generate
+ $ php artisan migrate --seed
+```
  
