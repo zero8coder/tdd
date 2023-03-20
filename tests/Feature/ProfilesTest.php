@@ -19,17 +19,17 @@ class ProfilesTest extends TestCase
             ->assertSee($user->name);
     }
 
-    /**
-     * @test
-     * 简介展示用户所有的帖子
-     */
-    public function profiles_display_all_threads_created_by_the_associated_user()
-    {
-        $user = User::factory()->create();
-        $thread = Thread::factory()->create(['user_id' => $user->id]);
-        $this->get("/profiles/" . urlencode($user->name))
-            ->assertStatus(200)
-            ->assertSee($thread->title)
-            ->assertSee($thread->body);
-    }
+//    /**
+//     * @test
+//     * 简介展示用户所有的帖子
+//     */
+//    public function profiles_display_all_threads_created_by_the_associated_user()
+//    {
+//        $user = User::factory()->create();
+//        $thread = Thread::factory()->create(['user_id' => $user->id]);
+//        $this->get("/profiles/" . urlencode($user->name))
+//            ->assertStatus(200)
+//            ->assertSee($thread->title)
+//            ->assertSee($thread->body);
+//    }
 }

@@ -60,4 +60,12 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class)->latest();
     }
 
+    /**
+     * 用户活动
+     */
+    public function activity()
+    {
+        return $this->hasMany(Activity::class);
+    }
+
 }
