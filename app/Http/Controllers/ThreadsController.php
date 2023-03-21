@@ -70,7 +70,8 @@ class ThreadsController extends Controller
             'body'       => request('body'),
         ]);
 
-        return redirect($thread->path());
+        return redirect($thread->path())
+            ->with('flash','你的帖子已发布成功');
     }
 
     public function create()
