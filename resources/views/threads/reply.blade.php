@@ -1,5 +1,5 @@
 <li class="list-group-item d-flex justify-content-between align-items-start">
-    <div class="ms-2 me-auto">
+    <div class="ms-2 me-auto" id="reply-{{ $reply->id }}">
         <div class="fw">
             <a href="{{ route('profile', $reply->owner->name) }}">
                 {{ $reply->owner->name }}
