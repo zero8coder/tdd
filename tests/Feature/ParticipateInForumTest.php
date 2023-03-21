@@ -57,4 +57,33 @@ class ParticipateInForumTest extends TestCase
             ->assertSessionHasErrors('body');
     }
 
+    /**
+     * @test
+     * 未登录用户不能删除回复
+     */
+    public function unauthorized_users_cannot_delete_replies()
+    {
+        $reply = Reply::factory()->create();
+        $this->delete("/replies/{$reply->id}")
+            ->assertRedirect('login');
+
+        $this->signIn()
+            ->delete("/replies/{$reply->id}")
+            ->assertStatus(403);
+
+    }
+
+    /**
+     * @test
+     * 登录用户可以删除自己的回复
+     */
+    public function authorized_users_can_delete_replies()
+    {
+        $this->signIn();
+        $reply = Reply::factory()->create(["user_id" => auth()->id()]);
+        $this->delete("/replies/{$reply->id}")->assertStatus(302);
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
+
+
 }

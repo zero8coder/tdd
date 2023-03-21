@@ -14,9 +14,19 @@
             <button
                 class="btn btn-primary"
                 type="submit" {{$reply->isFavorited() ? 'disabled' : ''}}
-            >{{ $reply->favorites_count }}点赞</button>
+            >{{ $reply->favorites_count }}点赞
+            </button>
         </form>
     </div>
+    @can('delete', $reply)
+        <div class="badge bg-danger rounded-pill">
+            <form action="/replies/{{ $reply->id }}" method="post">
+                {{ csrf_field() }}
+                {{ method_field('DELETE') }}
+                <button type="submit" class="btn btn-danger">删除</button>
+            </form>
+        </div>
+    @endcan
 </li>
 
 
