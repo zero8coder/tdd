@@ -17,6 +17,8 @@ class Reply extends Model
         'user_id'
     ];
     protected $with = ['owner', 'favorites'];
+    protected $appends = ['favoritesCount', 'created_at_see'];
+
 
     public function owner()
     {
@@ -32,4 +34,10 @@ class Reply extends Model
     {
         return $this->thread->path() . "#reply-{$this->id}";
     }
+
+    public function getCreatedAtSeeAttribute()
+    {
+        return $this->created_at->diffForHumans();
+    }
+
 }

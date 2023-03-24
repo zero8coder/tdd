@@ -20,6 +20,10 @@ class Thread extends Model
         'creator','channel'
     ];
 
+    protected $appends = [
+        'created_at_see'
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -65,6 +69,11 @@ class Thread extends Model
     public function scopeFilter($query, $filters)
     {
         return $filters->apply($query);
+    }
+
+    public function getCreatedAtSeeAttribute()
+    {
+        return $this->created_at->diffForHumans();
     }
 
 }

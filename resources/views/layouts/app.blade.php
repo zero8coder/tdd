@@ -18,10 +18,13 @@
 
     <!-- Styles -->
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
+    <style>
+        .mr-1 {margin-right: 1em;}
+    </style>
 </head>
 <body>
 <div id="app">
-    @include('layouts.nav')
+    <navview :open="true" :channels="{{$channels}}"></navview>
 
     <main class="py-4">
         @yield('content')
@@ -31,3 +34,10 @@
 </div>
 </body>
 </html>
+<script>
+    window.App = {!! json_encode([
+        'csrfToken' => csrf_token(),
+        'signIn' => Auth::check(),
+        'user' => Auth::user()
+    ]) !!};
+</script>

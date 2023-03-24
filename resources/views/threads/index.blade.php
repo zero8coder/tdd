@@ -1,20 +1,27 @@
 @extends('layouts.app')
 
 @section('content')
-    <ol class="list-group">
+    <div class="md:container md:mx-auto">
         @foreach($threads as $thread)
-
-            <li class="list-group-item d-flex justify-content-between align-items-start">
-                <div class="ms-2 me-auto">
-                    <div class="fw-bold"><a href="{{ $thread->path() }}">{{ $thread->title }}</a></div>
-                    {{ $thread->body }}
+            <div class="space-y-4 p-2">
+                <div class="space-y-4 max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8">
+                    <article>
+                        <div class="mt-1 block relative">
+                                    <span class="left-0"> <a
+                                            class="text-lg leading-tight font-medium text-black hover:underline"
+                                            href="{{ $thread->path() }}"
+                                        >{{ $thread->title }}</a>
+                                    </span>
+                            @if($thread->replies_count > 0)
+                                <span class="absolute right-0 text-gray-500">
+                                    {{ $thread->replies_count }}
+                                </span>
+                            @endif
+                        </div>
+                        <p class="mt-2 text-gray-500">       {{ $thread->body }}</p>
+                    </article>
                 </div>
-                @if (!empty($thread->replies_count))
-                    <span class="badge bg-primary rounded-pill">
-                        {{$thread->replies_count}}
-                    </span>
-                @endif
-            </li>
+            </div>
         @endforeach
-    </ol>
+    </div>
 @endsection

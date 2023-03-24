@@ -4,6 +4,9 @@
             {{ $profileUser->name }} 对回复进行了点赞
         </a>
     @endslot
+    @slot('date')
+        {{ $date }}
+    @endslot
     @slot('body')
         {{ $activity->subject->favorited->body }}
     @endslot

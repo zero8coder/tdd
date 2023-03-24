@@ -1,69 +1,72 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                <div>
-                    <div>
-                        <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> 发表了：
-                        {{ $thread->title }}
-                        @can('update',$thread)
-                            <form action="{{ $thread->path() }}" method="POST">
-                                {{ csrf_field() }}
-                                {{ method_field('DELETE') }}
+    <thread-view :thread = "{{ $thread }}" :replies = "{{ $replies }}"></thread-view>
+{{--    <div class="container">--}}
+{{--        <div class="row">--}}
+{{--            <div class="col-md-8 col-md-offset-2">--}}
+{{--                <div>--}}
+{{--                    <div>--}}
+{{--                        <a href="{{ route('profile', $thread->creator) }}">{{ $thread->creator->name }}</a> 发表了：--}}
+{{--                        {{ $thread->title }}--}}
+{{--                        @can('update',$thread)--}}
+{{--                            <form action="{{ $thread->path() }}" method="POST">--}}
+{{--                                {{ csrf_field() }}--}}
+{{--                                {{ method_field('DELETE') }}--}}
 
-                                <button type="submit" class="btn btn-link">删除</button>
-                            </form>
-                        @endcan
-                    </div>
+{{--                                <button type="submit" class="btn btn-link">删除</button>--}}
+{{--                            </form>--}}
+{{--                        @endcan--}}
+{{--                    </div>--}}
 
-                    <div>
-                        {{ $thread->body }}
-                    </div>
+{{--                    <div>--}}
+{{--                        {{ $thread->body }}--}}
+{{--                    </div>--}}
 
 
-                </div>
-            </div>
-        </div>
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        </div>--}}
 
-        <hr>
-        <div class="row">
-            <div>
-                @foreach ($replies as $reply)
-                    @include('threads.reply')
-                    <hr>
+{{--        <hr>--}}
+{{--        <div class="row">--}}
+{{--            <div>--}}
+{{--                <replies :data="{{ $thread->replies }}"></replies>--}}
 
-                @endforeach
-            </div>
-            <div>
-                {{ $replies->links() }}
-            </div>
-        </div>
+{{--                                @foreach ($replies as $reply)--}}
+{{--                    @include('threads.reply')--}}
+{{--                    <hr>--}}
 
-        @if( auth()->check())
-            {{-- 已登录用户能看 --}}
-            <div class="row">
-                <div class="mb-3">
-                    <form method="post" action="{{ $thread->path() . '/replies' }}">
-                        {{ csrf_field() }}
-                        <div class="mb-3">
-                            <textarea class="form-control" name="body" id="body" rows="5"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-primary mb-3">提交</button>
-                    </form>
-                </div>
-            </div>
-        @else
-            <p class="text-center">请先<a href="{{ route('login') }}">登录</a>，然后再发表回复 </p>
-        @endif
-        <div class="mb-3">
-            <div class="mb-3">
-                <p>
-                    <a href="#">{{ $thread->creator->name }}</a> 发布于 {{ $thread->created_at->diffForHumans() }},
-                    当前共有 {{ $thread->replies_count }} 个回复。
-                </p>
-            </div>
-        </div>
-    </div>
+{{--                @endforeach--}}
+{{--            </div>--}}
+{{--            <div>--}}
+{{--                {{ $replies->links() }}--}}
+{{--            </div>--}}
+{{--        </div>--}}
+
+{{--        @if( auth()->check())--}}
+{{--             已登录用户能看--}}
+{{--            <div class="row">--}}
+{{--                <div class="mb-3">--}}
+{{--                    <form method="post" action="{{ $thread->path() . '/replies' }}">--}}
+{{--                        {{ csrf_field() }}--}}
+{{--                        <div class="mb-3">--}}
+{{--                            <textarea class="form-control" name="body" id="body" rows="5"></textarea>--}}
+{{--                        </div>--}}
+{{--                        <button type="submit" class="btn btn-primary mb-3">提交</button>--}}
+{{--                    </form>--}}
+{{--                </div>--}}
+{{--            </div>--}}
+{{--        @endif--}}
+{{--            <p class="text-center">请先<a href="{{ route('login') }}">登录</a>，然后再发表回复 </p>--}}
+{{--        @endif--}}
+{{--        <div class="mb-3">--}}
+{{--            <div class="mb-3">--}}
+{{--                <p>--}}
+{{--                    <a href="#">{{ $thread->creator->name }}</a> 发布于 {{ $thread->created_at->diffForHumans() }},--}}
+{{--                    当前共有 {{ $thread->replies_count }} 个回复。--}}
+{{--                </p>--}}
+{{--            </div>--}}
+{{--        </div>--}}
+{{--    </div>--}}
 @endsection

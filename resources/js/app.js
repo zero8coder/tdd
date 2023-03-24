@@ -9,10 +9,14 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 import flash from "./components/Flash.vue";
+import thread from "./pages/Thread.vue";
+import navview from "./components/NavView.vue";
+
 const app = Vue.createApp({
-    components: {
-        flash
-    }
-}).mount('#app');
 
+});
 
+app.component('flash', flash)
+    .component('thread-view', thread)
+    .component('navview', navview)
+    .mount('#app');

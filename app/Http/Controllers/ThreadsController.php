@@ -36,9 +36,10 @@ class ThreadsController extends Controller
 
     public function show($channel, Thread $thread)
     {
+        $thread->create_at_see;
         return view('threads.show', [
             'thread'  => $thread,
-            'replies' => $thread->replies()->paginate(15)
+            'replies' => $thread->replies,
         ]);
     }
 
