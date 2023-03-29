@@ -34,15 +34,17 @@ export default {
 
     methods: {
         toggle() {
-            if (this.isFavorited){
-                axios.delete('/replies/' + this.reply.id + '/favorites')
-                this.isFavorited = false;
-                this.favoritesCount--;
-            }else {
-                axios.post('/replies/' + this.reply.id + '/favorites');
-                this.isFavorited = true;
-                this.favoritesCount++;
-            }
+            this.isFavorited ? this.delete() : this.create()
+        },
+        create() {
+            axios.post('/replies/' + this.reply.id + '/favorites');
+            this.isFavorited = true;
+            this.favoritesCount++;
+        },
+        delete() {
+            axios.delete('/replies/' + this.reply.id + '/favorites')
+            this.isFavorited = false;
+            this.favoritesCount--;
         }
     }
 }
