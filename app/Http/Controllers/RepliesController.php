@@ -29,6 +29,6 @@ class RepliesController extends Controller
         $this->authorize('delete', $reply);
         $reply->delete();
 
-        return back();
+        return response()->json(['code' => 200, 'message' => '成功', 'data'=>1]);
     }
 }
