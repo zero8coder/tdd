@@ -31,4 +31,13 @@ class RepliesController extends Controller
 
         return response()->json(['code' => 200, 'message' => '成功', 'data'=>1]);
     }
+
+    public function update(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+        $reply->body = request('body');
+        $reply->update();
+        return response()->json(['code' => 200, 'message' => '成功', 'data'=>1]);
+
+    }
 }

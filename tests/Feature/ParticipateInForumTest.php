@@ -85,5 +85,30 @@ class ParticipateInForumTest extends TestCase
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
 
+    /**
+     * @test
+     * 未授权用户不能修改回复
+     */
+    public function unauthorized_users_cannot_update_replies()
+    {
+        // 创建回复
+        $reply = Reply::factory()->create();
+        // 未登录用户重定向到登录页
+        $this->patch('/replies/' . $reply->id)->assertStatus(302)->assertRedirect('/login');
+        // 登录了无权限用户提示未授权
+        $this->signIn()->patch('/replies/' . $reply->id)->assertStatus(403);
+    }
+
+    /**
+     * @test
+     * 授权用户可以修改回复
+     */
+    public function authorized_users_can_update_replies()
+    {
+        $this->signIn();
+        $reply = Reply::factory()->create(['user_id' => auth()->id()]);
+        $this->patch('/replies/' . $reply->id, ['body' => 3333])->assertStatus(200);
+    }
+
 
 }

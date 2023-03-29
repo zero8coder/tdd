@@ -37,8 +37,8 @@
                 </div>
 
                 <div class="mt-2 text-gray-500"  v-if="editing">
-                    <textarea class="mt-2 text-gray-500  w-full rounded-md border-0 py-2 px-3.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"  rows="4">{{ body }}</textarea>
-                    <button type="submit"
+                    <textarea v-model="body" class="mt-2 text-gray-500  w-full rounded-md border-0 py-2 px-3.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"  rows="4"></textarea>
+                    <button @click="update" type="submit"
                             class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                         修改
                     </button>
