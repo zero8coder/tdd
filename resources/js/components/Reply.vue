@@ -54,6 +54,7 @@ import Favorite from './Favorite.vue';
 export default {
     props: ['reply'],
     components: {Favorite},
+    emits: ['deleted'],
     data() {
         return {
             editing: false,
@@ -87,6 +88,7 @@ export default {
 
         destroy() {
             axios.delete('/replies/' + this.id);
+            this.$emit('deleted');
         },
 
         favourite() {
