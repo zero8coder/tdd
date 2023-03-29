@@ -28,6 +28,15 @@ trait Favoritable
     }
 
     /**
+     * 取消点赞回复
+     */
+    public function unfavorite()
+    {
+        $attributes = ['user_id' => auth()->id()];
+        $this->favorites()->where($attributes)->delete();
+    }
+
+    /**
      * 是否点赞过
      * @return bool
      */
@@ -43,5 +52,13 @@ trait Favoritable
     public function getFavoritesCountAttribute()
     {
         return $this->favorites->count();
+    }
+
+    /**
+     * 是否点赞
+     */
+    public function getIsFavoritedAttribute()
+    {
+        return $this->isFavorited();
     }
 }

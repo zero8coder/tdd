@@ -49,4 +49,20 @@ class FavoritiesTest extends TestCase
 
         $this->assertCount(1, $reply->favorites);
     }
+
+    /**
+     * @test
+     * 授权用户可以取消点赞回复
+     *
+     */
+    public function an_authenticated_user_can_unfavorite_a_reply()
+    {
+        $this->signIn();
+        $reply = Reply::factory()->create();
+        $reply->favorite();
+        $this->delete('/replies/' . $reply->id . '/favorites')->assertStatus(200);
+        $this->assertCount(0, $reply->fresh()->favorites);
+
+    }
+
 }
