@@ -17,11 +17,11 @@ class RepliesController extends Controller
     public function store($channelId, Thread $thread)
     {
         $this->validate(request(), ['body' => 'required']);
-        $thread->addReply([
+        $reply =  $thread->addReply([
             'body' => request('body'),
             'user_id' => auth()->id()
         ]);
-        return back()->with('flash', '回复成功');
+        return $reply->load('owner');
     }
 
     public function destroy(Reply $reply)

@@ -4,6 +4,8 @@
             <reply :reply="reply" @deleted="remove(index)"></reply>
         </div>
     </div>
+    <new-reply :endpoint="endpoint" @created="add"></new-reply>
+
 </template>
 
 <script>
@@ -14,13 +16,17 @@ export default {
     components: {Reply},
     data() {
         return {
-            items: this.replies
+            items: this.replies,
+            endpoint: location.pathname+'/replies'
         }
     },
     methods: {
         remove(index) {
             this.items.splice(index, 1);
 
+        },
+        add(reply){
+            this.items.push(reply);
         }
     }
 
