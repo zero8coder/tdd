@@ -73,7 +73,11 @@ class Thread extends Model
 
     public function getCreatedAtSeeAttribute()
     {
-        return $this->created_at->diffForHumans();
+        if ($this->created_at) {
+            return $this->created_at->diffForHumans();
+        }
+
+        return '';
     }
 
 }
