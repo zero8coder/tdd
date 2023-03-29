@@ -3,30 +3,45 @@
         <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8">
             <article>
                 <div class="mt-1 block relative">
-                                    <span class="left-0"> <a
+                    <span class="left-0"> <a
                                         class="text-lg leading-tight font-medium text-black hover:underline"
                                         :href="'/profiles/'+reply.owner.name"
                                         v-text="reply.owner.name">
-                </a>回复于 {{ reply.created_at_see }}
-                                    </span>
-                    <span class="absolute right-0" @click="favourite" v-if="signIn && (user.id == reply.user_id)">
-                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                  stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round"
-        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
-</svg>
+                         </a>回复于 {{ reply.created_at_see }}
+                     </span>
+                    <span class="text-red-500" v-if="isFavourite">
+                        <span class="absolute right-8">
+                               {{reply.favoritesCount}}
+                        </span>
+                        <span class="absolute right-0">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                                <path
+                                    d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/>
+                            </svg>
+                        </span>
                     </span>
+
+                    <span class="absolute right-10 text-gray-500"  v-else>
+                           {{reply.favoritesCount}}
+                    </span>
+                    <span class="absolute right-0" @click="favourite" v-if="isOwner">
+
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                             stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                        </svg>
+                    </span>
+
                 </div>
                 <p class="mt-2 text-gray-500">{{ body }}</p>
-                <div class="mt-3 block relative" v-if="signIn && (user.id == reply.user_id)">
+                <div class="mt-3 block relative" v-if="isOwner">
+
                      <span class="absolute left-0 text-gray-500">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                               stroke="currentColor" class="w-6 h-6">
-  <path stroke-linecap="round" stroke-linejoin="round"
-        d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
-</svg>
-
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
+                        </svg>
                      </span>
+
                     <span class="absolute left-10 text-gray-500" @click="destroy">
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                   stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -50,7 +65,8 @@ export default {
         return {
             editing: false,
             id: this.reply.id,
-            body: this.reply.body
+            body: this.reply.body,
+            isFavourite: true
         };
     },
     computed: {
@@ -62,6 +78,9 @@ export default {
         },
         user() {
             return window.App.user;
+        },
+        isOwner() {
+            return window.App.signIn && this.reply.user_id === window.App.user.user_id;
         }
 
     },
