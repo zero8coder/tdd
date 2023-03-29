@@ -9,6 +9,7 @@
                                         v-text="reply.owner.name">
                          </a>回复于 {{ reply.created_at_see }}
                      </span>
+                <!-- 点赞 -->
                     <span class="text-red-500" v-if="isFavourite">
                         <span class="absolute right-8">
                                {{reply.favoritesCount}}
@@ -21,27 +22,41 @@
                         </span>
                     </span>
 
-                    <span class="absolute right-10 text-gray-500"  v-else>
-                           {{reply.favoritesCount}}
-                    </span>
-                    <span class="absolute right-0" @click="favourite" v-if="isOwner">
-
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                             stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+                    <span class="text-gray-500"  @click="favourite" v-else>
+                        <span class="absolute right-8">
+                               {{reply.favoritesCount}}
+                        </span>
+                        <span class="absolute right-0" >
+                               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                    stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
                         </svg>
+                        </span>
                     </span>
+                <!-- 点赞End -->
 
                 </div>
-                <p class="mt-2 text-gray-500">{{ body }}</p>
-                <div class="mt-3 block relative" v-if="isOwner">
 
-                     <span class="absolute left-0 text-gray-500">
+                <div class="mt-2 text-gray-500"  v-if="editing">
+                    <textarea class="mt-2 text-gray-500  w-full rounded-md border-0 py-2 px-3.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"  rows="4">{{ body }}</textarea>
+                    <button type="submit"
+                            class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                        修改
+                    </button>
+                </div>
+
+                <div class="mt-2 text-gray-500" v-else>
+                    <p class="mt-2 text-gray-500">{{ body }}</p>
+                </div>
+                <div class="mt-3 block relative" v-if="isOwner">
+                    <!-- 修改 -->
+                     <span class="absolute left-0 text-gray-500 " @click="editing=true">
                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                               stroke="currentColor" class="w-6 h-6">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/>
                         </svg>
                      </span>
 
+                    <!-- 删除 -->
                     <span class="absolute left-10 text-gray-500" @click="destroy">
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                   stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -66,7 +81,7 @@ export default {
             editing: false,
             id: this.reply.id,
             body: this.reply.body,
-            isFavourite: true
+            isFavourite: false
         };
     },
     computed: {
@@ -80,7 +95,7 @@ export default {
             return window.App.user;
         },
         isOwner() {
-            return window.App.signIn && this.reply.user_id === window.App.user.user_id;
+            return window.App.signIn && this.reply.user_id == window.App.user.id;
         }
 
     },
