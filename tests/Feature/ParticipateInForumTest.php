@@ -38,7 +38,7 @@ class ParticipateInForumTest extends TestCase
         // 回复帖子
         $reply = Reply::factory()->make(['user_id' => $user->id, 'thread_id' => $thread->id]);
         $this->post($thread->path() . '/replies', $reply->toArray())
-            ->assertStatus(302);
+            ->assertStatus(201);
         // 能看到回复的内容
         $this->get($thread->path())
             ->assertSee($reply->body);
