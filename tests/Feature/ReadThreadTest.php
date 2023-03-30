@@ -102,4 +102,20 @@ class ReadThreadTest extends TestCase
 
     }
 
+    /**
+     * @test
+     * 用户可以根据一个话题请求所有回复
+     */
+    public function a_user_can_request_all_replies_for_a_given_thread()
+    {
+        // 创建话题
+        $thread = Thread::factory()->create();
+        // 创建多个回复
+        $replies = Reply::factory()->count(2)->create(['thread_id' => $thread->id]);
+        // 可以看到回复数量
+        $response = $this->getJson($thread->path() . '/replies')->json();
+        $this->assertCount(1, $response['data']);
+        $this->assertEquals(2, $response['total']);
+    }
+
 }

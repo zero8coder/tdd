@@ -39,7 +39,6 @@ class ThreadsController extends Controller
         $thread->create_at_see;
         return view('threads.show', [
             'thread'  => $thread,
-            'replies' => $thread->replies,
         ]);
     }
 

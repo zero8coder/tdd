@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <thread-view :thread = "{{ $thread }}" :replies = "{{ $replies }}"></thread-view>
-    <replies :replies="{{ $replies }}"></replies>
+    <thread-view :thread = "{{ $thread }}" ></thread-view>
+    <replies> </replies>
 @endsection

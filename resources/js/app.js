@@ -12,7 +12,7 @@ import thread from "./pages/Thread.vue";
 import navview from "./components/NavView.vue";
 import replies from './components/Replies';
 import newReply from './components/NewReply';
-
+import paginator from './components/Paginator.vue';
 const app = Vue.createApp({
 
 });
@@ -22,4 +22,5 @@ app.component('flash', flash)
     .component('replies', replies)
     .component('navview', navview)
     .component('new-reply', newReply)
+    .component('paginator', paginator)
     .mount('#app');
