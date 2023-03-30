@@ -68,4 +68,50 @@ class ThreadTest extends TestCase
         $this->assertEquals("/threads/{$thread->channel->slug}/{$thread->id}", $thread->path());
     }
 
+    /**
+     * @test
+     * 一个帖子能被订阅
+     */
+    public function a_thread_can_be_subscribed_to()
+    {
+        // 创建一个帖子
+        $thread = Thread::factory()->create();
+        // 一个登录用户
+        $this->signIn();
+        // 帖子被订阅
+        $thread->subscribe();
+        // 帖子被订阅的人里有登录用户
+        $num = $thread->subscriptions()->where('user_id', auth()->id())->count();
+        $this->assertEquals(1, $num);
+    }
+
+    /**
+     * @test
+     * 一个帖子能取消订阅
+     */
+    public function a_thread_can_be_unsubscribed_from()
+    {
+        // 创建一个帖子
+        $thread = Thread::factory()->create();
+        // 帖子订阅
+        $thread->subscribe($userId = 1);
+        // 帖子取消订阅
+        $thread->unsubscribe($userId);
+        $this->assertCount(0 ,$thread->subscriptions);
+    }
+
+    /**
+     * @test
+     * 是否被授权用户订阅
+     */
+    public function it_knows_if_the_authenticated_user_is_subscribed_to_it()
+    {
+        // 帖子
+        $thread = Thread::factory()->create();
+        $this->signIn();
+        $this->assertFalse($thread->isSubscribedTo);
+        $thread->subscribe();
+        $this->assertTrue($thread->isSubscribedTo);
+    }
+
 }

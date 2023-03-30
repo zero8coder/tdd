@@ -9,6 +9,7 @@
                             :href="'/profiles/'+thread.creator.name"
                             v-text="thread.creator.name"></a>发表了{{ thread.title }}
                         </span>
+
                         <span class="absolute right-0" @click="destroy">
                              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                   stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
@@ -18,6 +19,9 @@
                         </span>
                     </div>
                     <p class="mt-2 text-gray-500">{{ thread.body }}</p>
+                    <span class="mt-3">
+                        <subscribe-button :isSubscribe="thread.isSubscribedTo"></subscribe-button>
+                    </span>
                 </article>
             </div>
         </div>
@@ -25,10 +29,12 @@
 </template>
 
 <script>
+import SubscribeButton from '../components/SubscribeButton';
 
 export default {
     name: "Thread",
     props: ["thread"],
+    components: {SubscribeButton},
     data() {
         return {
             can_deleting: true,

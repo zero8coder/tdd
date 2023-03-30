@@ -103,11 +103,11 @@ class ReadThreadTest extends TestCase
 
     /**
      * @test
-     * 用户可以根据一个话题请求所有回复
+     * 用户可以根据一个帖子请求所有回复
      */
     public function a_user_can_request_all_replies_for_a_given_thread()
     {
-        // 创建话题
+        // 创建帖子
         $thread = Thread::factory()->create();
         // 创建多个回复
         $replies = Reply::factory()->count(40)->create(['thread_id' => $thread->id]);

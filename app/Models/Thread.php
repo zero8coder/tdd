@@ -21,7 +21,8 @@ class Thread extends Model
     ];
 
     protected $appends = [
-        'created_at_see'
+        'created_at_see',
+        'isSubscribedTo'
     ];
 
     protected static function boot()
@@ -77,4 +78,38 @@ class Thread extends Model
         return '';
     }
 
+    // 订阅
+    public function subscribe($userId = null)
+    {
+        $this->subscriptions()->create([
+            'user_id' => $userId ?: auth()->id()
+        ]);
+        return $this;
+    }
+
+    public function unsubscribe($userId = null)
+    {
+        $userId = $userId ?: auth()->id();
+        var_dump($userId);
+        $this->subscriptions()->where('user_id', $userId)->delete();
+        return $this;
+    }
+
+    /**
+     * 订阅的人
+     */
+    public function subscriptions()
+    {
+        return $this->hasMany(ThreadSubscription::class);
+    }
+
+    /**
+     * 是否被当前用户订阅
+     */
+    public function getIsSubscribedToAttribute()
+    {
+        return $this->subscriptions()
+            ->where('user_id', auth()->id())
+            ->exists();
+    }
 }
