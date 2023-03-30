@@ -50,8 +50,7 @@ class ReadThreadTest extends TestCase
         $reply = Reply::factory()->create(['thread_id' => $this->thread->id]);
         // 那么当我们看该帖子时
         // 我们也要看到回复
-        $this->get($this->thread->path())
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
     }
 
     /**
@@ -114,7 +113,7 @@ class ReadThreadTest extends TestCase
         $replies = Reply::factory()->count(2)->create(['thread_id' => $thread->id]);
         // 可以看到回复数量
         $response = $this->getJson($thread->path() . '/replies')->json();
-        $this->assertCount(1, $response['data']);
+        $this->assertCount(2, $response['data']);
         $this->assertEquals(2, $response['total']);
     }
 

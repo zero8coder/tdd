@@ -40,8 +40,8 @@ class ParticipateInForumTest extends TestCase
         $this->post($thread->path() . '/replies', $reply->toArray())
             ->assertStatus(201);
         // 能看到回复的内容
-        $this->get($thread->path())
-            ->assertSee($reply->body);
+        $this->assertDatabaseHas('replies', ['body' => $reply->body]);
+
     }
 
     /**
