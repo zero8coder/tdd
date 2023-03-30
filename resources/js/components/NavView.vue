@@ -172,6 +172,13 @@ function getAllViewChildren() {
         has_children: false,
         children: []
     });
+    all_view_children.push({
+        name: '无回复帖子',
+        href: '/threads?unanswered=1',
+        current: false,
+        has_children: false,
+        children: []
+    });
     if (window.App.signIn) {
         all_view_children.push({
             name: '我的帖子',

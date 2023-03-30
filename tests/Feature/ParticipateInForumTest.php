@@ -41,6 +41,8 @@ class ParticipateInForumTest extends TestCase
             ->assertStatus(201);
         // 能看到回复的内容
         $this->assertDatabaseHas('replies', ['body' => $reply->body]);
+        $this->assertEquals(1,$reply->thread->fresh()->replies_count);
+
 
     }
 
@@ -83,6 +85,7 @@ class ParticipateInForumTest extends TestCase
         $reply = Reply::factory()->create(["user_id" => auth()->id()]);
         $this->delete("/replies/{$reply->id}")->assertStatus(200);
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+        $this->assertEquals(0,$reply->thread->fresh()->replies_count);
     }
 
     /**

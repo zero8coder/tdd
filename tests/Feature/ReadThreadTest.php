@@ -117,4 +117,21 @@ class ReadThreadTest extends TestCase
         $this->assertEquals(40, $response['total']);
     }
 
+    /**
+     * @test
+     * 用户可以根据没有回复来过滤帖子
+     */
+    public function a_user_can_filter_threads_by_those_that_are_unanswered()
+    {
+        // 创建帖子
+        $thread = $this->thread;
+        // 创建回复
+        Reply::factory()->create();
+        // 有两个帖子
+        $this->assertDatabaseCount('threads', 2);
+        // 无回复帖子只有一个
+        $response = $this->getJson('threads?unanswered=1')->json();
+        $this->assertCount(1,$response);
+    }
+
 }
