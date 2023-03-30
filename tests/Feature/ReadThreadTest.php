@@ -110,11 +110,11 @@ class ReadThreadTest extends TestCase
         // 创建话题
         $thread = Thread::factory()->create();
         // 创建多个回复
-        $replies = Reply::factory()->count(2)->create(['thread_id' => $thread->id]);
+        $replies = Reply::factory()->count(40)->create(['thread_id' => $thread->id]);
         // 可以看到回复数量
         $response = $this->getJson($thread->path() . '/replies')->json();
-        $this->assertCount(2, $response['data']);
-        $this->assertEquals(2, $response['total']);
+        $this->assertCount(20, $response['data']);
+        $this->assertEquals(40, $response['total']);
     }
 
 }
