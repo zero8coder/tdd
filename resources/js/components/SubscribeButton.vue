@@ -10,14 +10,14 @@ export default {
     name: "SubscribeButton",
     props: ["isSubscribe"],
     data() {
-        // return {
-        //     isSubscribe:false
-        // }
+        return {
+            active:this.isSubscribe
+        }
     },
     methods:{
         subscribe(){
-            axios[(this.isSubscribe? 'delete':'post'), (location.pathname + '/subscriptions')]
-            this.isSubscribe = !this.isSubscribe
+            axios[(this.active? 'delete':'post')](location.pathname + '/subscriptions')
+            this.active = !this.active
         }
     }
 
