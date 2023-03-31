@@ -45,7 +45,8 @@ class ThreadWasUpdated extends Notification
     public function toArray($notifiable)
     {
         return [
-            'message' => 'Temporary data.'
+            'message' => $this->reply->owner->name . '回复帖子' . $this->thread->title,
+            'link' => $this->reply->path()
         ];
     }
 }
