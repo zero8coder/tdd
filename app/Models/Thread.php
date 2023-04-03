@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -23,7 +22,7 @@ class Thread extends Model
     ];
 
     protected $with = [
-        'creator','channel'
+        'creator', 'channel'
     ];
 
     protected $appends = [
@@ -64,12 +63,18 @@ class Thread extends Model
     {
         $reply = $this->replies()->create($reply);
         // 通知所有订阅
-        $this->subscriptions
-            ->filter(function ($sub) use ($reply) {
-            return $sub->user_id != $reply->user_id;
-        })->each->notify($reply);
+        $this->notifySubscribers($reply);
         return $reply;
 
+    }
+
+    // 通知所有订阅
+    public function notifySubscribers($reply)
+    {
+        $this->subscriptions
+            ->where('user_id','!=',$reply->user_id)
+            ->each
+            ->notify($reply);
     }
 
     public function channel()
