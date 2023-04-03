@@ -37,6 +37,9 @@ class ThreadsController extends Controller
     public function show($channel, Thread $thread)
     {
         $thread->create_at_see;
+        if (auth()->check()) {
+            auth()->user()->read($thread);
+        }
         return view('threads.show', [
             'thread'  => $thread,
         ]);

@@ -133,4 +133,23 @@ class ThreadTest extends TestCase
         $this->assertTrue($thread->isSubscribedTo);
     }
 
+    /**
+     * @test
+     * 一个帖子检测用户是否读取过所有回复
+     */
+    public function a_thread_can_check_if_the_authenticated_user_has_read_all_replies()
+    {
+        $this->signIn();
+        $thread = Thread::factory()->create();
+        tap(auth()->user(), function ($user) use ($thread)  {
+            // 对标题进行加粗显示
+            $this->assertTrue($thread->hasUpdatesFor($user));
+            // 浏览话题
+            $user->read($thread);
+            // 取消加粗
+            $this->assertFalse($thread->hasUpdatesFor($user));
+        });
+    }
+
+
 }

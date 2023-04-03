@@ -7,11 +7,13 @@
                 <div class="space-y-4 max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8">
                     <article>
                         <div class="mt-1 block relative">
-                                    <span class="left-0"> <a
-                                            class="text-lg leading-tight font-medium text-black hover:underline"
-                                            href="{{ $thread->path() }}"
-                                        >{{ $thread->title }}</a>
-                                    </span>
+                                <span class="left-0 " >
+                                    <a class="text-lg leading-tight font-medium
+                                        @if($thread->hasUpdatesFor(auth()->user())) text-black  @else text-gray-500  @endif
+                                        hover:underline"
+                                        href="{{ $thread->path() }}"
+                                    >{{ $thread->title }}</a>
+                                </span>
                             @if($thread->replies_count > 0)
                                 <span class="absolute right-0 text-gray-500">
                                     {{ $thread->replies_count }}
