@@ -78,10 +78,9 @@ class NotificationsTest extends TestCase
     {
         $thread = Thread::factory()->create()->subscribe();
         $thread->addReply([
-            'user_id' => User::factory()->create(),
+            'user_id' => User::factory()->create()->id,
             'body'    => '回复测试'
         ]);
-
         return $thread;
     }
 }

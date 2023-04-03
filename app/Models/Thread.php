@@ -103,7 +103,6 @@ class Thread extends Model
     public function unsubscribe($userId = null)
     {
         $userId = $userId ?: auth()->id();
-        var_dump($userId);
         $this->subscriptions()->where('user_id', $userId)->delete();
         return $this;
     }
