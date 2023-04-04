@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
+use Exception;
 use Tests\TestCase;
 
 class ParticipateInForumTest extends TestCase
@@ -111,6 +112,23 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
         $reply = Reply::factory()->create(['user_id' => auth()->id()]);
         $this->patch('/replies/' . $reply->id, ['body' => 3333])->assertStatus(200);
+    }
+
+    /**
+     * @test
+     * 回复有禁止的词汇不给创建
+     */
+    public function replies_contain_spam_may_not_be_created()
+    {
+        $this->signIn();
+
+        $thread = Thread::factory()->create();
+        $reply = Reply::factory()->make([
+            'body' => 'something forbidden'
+        ]);
+
+        $this->post($thread->path() . '/replies',$reply->toArray())
+        ->assertSee('Your reply contains spam');
     }
 
 

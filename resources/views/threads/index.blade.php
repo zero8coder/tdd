@@ -9,7 +9,7 @@
                         <div class="mt-1 block relative">
                                 <span class="left-0 " >
                                     <a class="text-lg leading-tight font-medium
-                                        @if($thread->hasUpdatesFor(auth()->user())) text-black  @else text-gray-500  @endif
+                                        @if(auth()->check() && $thread->hasUpdatesFor(auth()->user())) text-black  @else text-gray-500  @endif
                                         hover:underline"
                                         href="{{ $thread->path() }}"
                                     >{{ $thread->title }}</a>
