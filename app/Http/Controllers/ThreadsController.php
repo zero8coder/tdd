@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Inspections\Spam;
 use App\Models\Channel;
 use App\Models\Thread;
+use App\Rules\SpamFree;
 use Illuminate\Http\Request;
 use App\Filters\ThreadsFilters;
 
@@ -60,13 +61,12 @@ class ThreadsController extends Controller
     {
         $this->validate($request, [
             'title'      => 'required',
-            'body'       => 'required',
+            'body'       => ['required', new SpamFree],
             'channel_id' => 'required|exists:channels,id'
         ], [
             'channel_id.required' => '频道 必选',
             'channel_id.exists'   => '频道 不存在'
         ]);
-        $spam->detect($request['body']);
 
         $thread = Thread::create([
             'user_id'    => auth()->id(),

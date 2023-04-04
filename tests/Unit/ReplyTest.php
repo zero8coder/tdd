@@ -17,4 +17,14 @@ class ReplyTest extends TestCase
         $reply =  Reply::factory()->create();
         $this->assertInstanceOf('App\Models\User', $reply->owner);
     }
+
+    /**
+     * @test
+     * 回复是否是刚发布
+     */
+    public function it_knows_if_it_was_just_published()
+    {
+        $reply = Reply::factory()->create();
+        $this->assertTrue($reply->wasJustPublished());
+    }
 }

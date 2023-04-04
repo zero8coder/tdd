@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Illuminate\Validation\ValidationException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +38,20 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    public function render($request, Throwable $e)
+    {
+        if ($e instanceof ValidationException) {
+            if ($request->expectsJson()) {
+                return response('验证失败', 422);
+            }
+        }
+
+        if ($e instanceof ThrottleException) {
+            return response('提交太频繁', 429);
+        }
+
+        return parent::render($request, $e);
     }
 }

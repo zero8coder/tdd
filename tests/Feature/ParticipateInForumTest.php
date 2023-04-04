@@ -56,8 +56,8 @@ class ParticipateInForumTest extends TestCase
         $this->signIn();
         $thread = Thread::factory()->create();
         $reply = Reply::factory()->make(['body' => null]);
-        $this->post($thread->path() . '/replies', $reply->toArray())
-            ->assertSessionHasErrors('body');
+        $this->json('post', $thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
     }
 
     /**
@@ -127,8 +127,25 @@ class ParticipateInForumTest extends TestCase
             'body' => 'something forbidden'
         ]);
 
-        $this->post($thread->path() . '/replies',$reply->toArray())
-        ->assertSee('Your reply contains spam');
+        $this->json('post', $thread->path() . '/replies',$reply->toArray())
+        ->assertStatus(422);
+    }
+
+    /**
+     * @test
+     * 用户一分钟只能回复一次
+     */
+    public function users_may_only_reply_a_maximum_of_once_per_minute()
+    {
+        $this->signIn();
+        $thread = Thread::factory()->create();
+        $reply = Reply::factory()->make(['body' => '简易回复']);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(201);
+
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(429);
     }
 
 

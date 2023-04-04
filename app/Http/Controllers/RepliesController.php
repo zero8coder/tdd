@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Inspections\Spam;
+use App\Http\Requests\CreatePostRequest;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Rules\SpamFree;
+use Illuminate\Support\Facades\Gate;
 
 class RepliesController extends Controller
 {
@@ -13,20 +15,12 @@ class RepliesController extends Controller
         $this->middleware('auth', ['except' => 'index']);
     }
 
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, CreatePostRequest $request)
     {
-        try {
-            $this->validateReply();
-
-            $reply = $thread->addReply([
-                'body'    => request('body'),
-                'user_id' => auth()->id()
-            ]);
-        } catch (\Exception $e) {
-            return response('回复有问题', 422);
-        }
-
-        return $reply->load('owner');
+        return $thread->addReply([
+            'body'    => request('body'),
+            'user_id' => auth()->id()
+        ])->load('owner');
     }
 
     public function destroy(Reply $reply)
@@ -41,7 +35,7 @@ class RepliesController extends Controller
     {
         $this->authorize('update', $reply);
         try {
-            $this->validateReply();
+            $this->validate(request(), ['body' => ['required', new SpamFree]]);
             $reply->body = request('body');
             $reply->update();
         } catch (\Exception $e) {
@@ -56,9 +50,4 @@ class RepliesController extends Controller
         return $thread->replies()->paginate(20);
     }
 
-    protected function validateReply()
-    {
-        $this->validate(request(), ['body' => 'required']);
-        resolve(Spam::class)->detect(request(('body')));
-    }
 }

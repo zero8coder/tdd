@@ -62,6 +62,14 @@ class User extends Authenticatable
     }
 
     /**
+     * 最新回复
+     */
+    public function lastReply()
+    {
+        return $this->hasOne(Reply::class)->latest();
+    }
+
+    /**
      * 用户活动
      */
     public function activity()
