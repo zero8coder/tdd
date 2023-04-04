@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Inspections\Spam;
 use App\Models\Reply;
 use App\Models\Thread;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class RepliesController extends Controller
 {
@@ -15,16 +13,19 @@ class RepliesController extends Controller
         $this->middleware('auth', ['except' => 'index']);
     }
 
-    public function store($channelId, Thread $thread, Spam $spam)
+    public function store($channelId, Thread $thread)
     {
-        $this->validate(request(), ['body' => 'required']);
+        try {
+            $this->validateReply();
 
-        $spam->detect(request(('body')));
+            $reply = $thread->addReply([
+                'body'    => request('body'),
+                'user_id' => auth()->id()
+            ]);
+        } catch (\Exception $e) {
+            return response('回复有问题', 422);
+        }
 
-        $reply =  $thread->addReply([
-            'body' => request('body'),
-            'user_id' => auth()->id()
-        ]);
         return $reply->load('owner');
     }
 
@@ -33,20 +34,31 @@ class RepliesController extends Controller
         $this->authorize('delete', $reply);
         $reply->delete();
 
-        return response()->json(['code' => 200, 'message' => '成功', 'data'=>1]);
+        return response()->json(['code' => 200, 'message' => '成功', 'data' => 1]);
     }
 
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
-        $reply->body = request('body');
-        $reply->update();
-        return response()->json(['code' => 200, 'message' => '成功', 'data'=>1]);
+        try {
+            $this->validateReply();
+            $reply->body = request('body');
+            $reply->update();
+        } catch (\Exception $e) {
+            return response('回复保存走失了', 422);
+        }
 
+        return response()->json(['code' => 200, 'message' => '成功', 'data' => 1]);
     }
 
     public function index($channelId, Thread $thread)
     {
         return $thread->replies()->paginate(20);
+    }
+
+    protected function validateReply()
+    {
+        $this->validate(request(), ['body' => 'required']);
+        resolve(Spam::class)->detect(request(('body')));
     }
 }

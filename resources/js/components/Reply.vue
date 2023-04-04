@@ -82,6 +82,8 @@ export default {
         update() {
             axios.patch('/replies/' + this.id, {
                 body: this.body
+            }).catch(error => {
+                // todo flash
             });
             this.editing = false;
         },

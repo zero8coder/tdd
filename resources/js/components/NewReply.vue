@@ -47,8 +47,15 @@ export default {
     methods: {
         addReply() {
             axios.post(location.pathname + '/replies', {body: this.body})
+                .catch(error => {
+                    console.log('ERROR');
+                    console.log(error.response.data);
+                    // todo flash
+                })
                 .then(({data}) => {
                     this.body = '';
+                    // todo flash
+
                     this.$emit('created', data);
                 });
         }
