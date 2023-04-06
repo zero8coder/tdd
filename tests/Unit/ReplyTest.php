@@ -5,6 +5,7 @@ namespace Tests\Unit;
 use App\Models\Reply;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
+
 class ReplyTest extends TestCase
 {
 
@@ -14,7 +15,7 @@ class ReplyTest extends TestCase
      */
     public function a_reply_has_an_owner()
     {
-        $reply =  Reply::factory()->create();
+        $reply = Reply::factory()->create();
         $this->assertInstanceOf('App\Models\User', $reply->owner);
     }
 
@@ -39,5 +40,19 @@ class ReplyTest extends TestCase
         ]);
 
         $this->assertEquals(['JaneDoe', 'JohnDoe'], $reply->mentionedUsers());
+    }
+
+    /**
+     * @test
+     * @的人追加链接
+     */
+    public function it_warps_mentioned_usernames_in_the_body_within_archor_tags()
+    {
+        $reply = Reply::factory()->create(['body' => '你好 @Jane-Doe。']);
+
+        $this->assertEquals(
+            '你好 <a href="/profiles/Jane-Doe">@Jane-Doe</a>。',
+            $reply->body
+        );
     }
 }
