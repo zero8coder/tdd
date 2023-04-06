@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -62,8 +63,9 @@ class Thread extends Model
     public function addReply($reply)
     {
         $reply = $this->replies()->create($reply);
-        // 通知所有订阅
-        $this->notifySubscribers($reply);
+
+        event(new ThreadReceivedNewReply($reply));
+
         return $reply;
 
     }

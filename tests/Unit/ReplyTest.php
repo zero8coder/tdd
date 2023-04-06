@@ -27,4 +27,17 @@ class ReplyTest extends TestCase
         $reply = Reply::factory()->create();
         $this->assertTrue($reply->wasJustPublished());
     }
+
+    /**
+     * @test
+     * 获取所有被@的账号
+     */
+    public function it_can_detect_all_mentioned_users_in_the_body()
+    {
+        $reply = Reply::factory()->create([
+            'body' => '@JaneDoe wants to talk to @JohnDoe'
+        ]);
+
+        $this->assertEquals(['JaneDoe', 'JohnDoe'], $reply->mentionedUsers());
+    }
 }

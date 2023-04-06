@@ -16,11 +16,11 @@ class Reply extends Model
     protected static function boot()
     {
         parent::boot();
-        static::created(function ($reply){
+        static::created(function ($reply) {
             $reply->thread->increment('replies_count');
         });
 
-        static::deleted(function ($reply){
+        static::deleted(function ($reply) {
             $reply->thread->decrement('replies_count');
         });
     }
@@ -60,6 +60,12 @@ class Reply extends Model
             return $this->created_at->diffForHumans();
         }
         return '';
+    }
+
+    public function mentionedUsers()
+    {
+        preg_match_all('/\@([^\s\.]+)/', $this->body, $matches);
+        return $matches[1];
     }
 
 }

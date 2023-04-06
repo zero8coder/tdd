@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\ThreadReceivedNewReply;
 use App\Http\Requests\CreatePostRequest;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
+use App\Notifications\YouWereMentioned;
 use App\Rules\SpamFree;
 use Illuminate\Support\Facades\Gate;
 
@@ -21,6 +24,7 @@ class RepliesController extends Controller
             'body'    => request('body'),
             'user_id' => auth()->id()
         ])->load('owner');
+
     }
 
     public function destroy(Reply $reply)
@@ -34,14 +38,8 @@ class RepliesController extends Controller
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
-        try {
-            $this->validate(request(), ['body' => ['required', new SpamFree]]);
-            $reply->body = request('body');
-            $reply->update();
-        } catch (\Exception $e) {
-            return response('回复保存走失了', 422);
-        }
-
+        $this->validate(request(), ['body' => ['required', new SpamFree]]);
+        $reply->update(['body' => request('body')]);
         return response()->json(['code' => 200, 'message' => '成功', 'data' => 1]);
     }
 
