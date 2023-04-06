@@ -11,6 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ mix('js/app.js') }}" defer></script>
+   @yield('scripts')
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -21,6 +22,9 @@
     <style>
         .mr-1 {margin-right: 1em;}
     </style>
+
+    @yield('header')
+
 </head>
 <body>
 <div id="app">

@@ -11,7 +11,7 @@ use Tests\TestCase;
 class ReadThreadTest extends TestCase
 {
 
-    protected  $thread;
+    protected $thread;
 
     protected function setUp(): void
     {
@@ -97,7 +97,7 @@ class ReadThreadTest extends TestCase
         // 根据回复数来筛选
         $response = $this->getJson('/threads?popularity=1')->json();
         // 回复数由多到少
-        $this->assertEquals([3,2,0], array_column($response, 'replies_count'));
+        $this->assertEquals([3, 2, 0], array_column($response['data'], 'replies_count'));
 
     }
 
@@ -131,7 +131,7 @@ class ReadThreadTest extends TestCase
         $this->assertDatabaseCount('threads', 2);
         // 无回复帖子只有一个
         $response = $this->getJson('threads?unanswered=1')->json();
-        $this->assertCount(1,$response);
+        $this->assertCount(1, $response['data']);
     }
 
 }

@@ -36,10 +36,10 @@ class ReplyTest extends TestCase
     public function it_can_detect_all_mentioned_users_in_the_body()
     {
         $reply = Reply::factory()->create([
-            'body' => '@JaneDoe wants to talk to @JohnDoe'
+            'body' => '@李白 wants to talk to @JohnDoe'
         ]);
 
-        $this->assertEquals(['JaneDoe', 'JohnDoe'], $reply->mentionedUsers());
+        $this->assertEquals(['李白', 'JohnDoe'], $reply->mentionedUsers());
     }
 
     /**
@@ -48,10 +48,10 @@ class ReplyTest extends TestCase
      */
     public function it_warps_mentioned_usernames_in_the_body_within_archor_tags()
     {
-        $reply = Reply::factory()->create(['body' => '你好 @Jane-Doe。']);
+        $reply = Reply::factory()->create(['body' => '你好 @李白。']);
 
         $this->assertEquals(
-            '你好 <a href="/profiles/Jane-Doe">@Jane-Doe</a>。',
+            '你好 <a href="/profiles/李白">@李白</a>。',
             $reply->body
         );
     }

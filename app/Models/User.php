@@ -22,6 +22,7 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar_path'
     ];
 
     /**
@@ -41,6 +42,10 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+    ];
+
+    protected $appends = [
+        'user_avatar'
     ];
 
     /**
@@ -85,9 +90,19 @@ class User extends Authenticatable
         );
     }
 
+    public function avatar()
+    {
+        return $this->avatar_path ?: 'avatars/default.jpg';
+    }
+
     public function visitedThreadCacheKey($thread)
     {
         return $key = sprintf("users.%s.visits.%s",$this->id,$thread->id);
+    }
+
+    public function getUserAvatarAttribute()
+    {
+        return $this->avatar();
     }
 
 }

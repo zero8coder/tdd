@@ -4,7 +4,9 @@
             <div class="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-2xl p-8">
                 <article>
                     <div class="mt-1 block relative">
-                        <span class="left-0"> <a
+                        <span class="left-0 flex">
+                            <img :src="'/'+thread.creator.user_avatar"  width="25" height="25">
+                            <a
                             class="text-lg leading-tight font-medium text-black hover:underline"
                             :href="'/profiles/'+thread.creator.name"
                             v-text="thread.creator.name"></a>发表了{{ thread.title }}

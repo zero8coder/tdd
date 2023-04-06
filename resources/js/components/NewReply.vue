@@ -27,6 +27,10 @@
 </template>
 
 <script>
+
+import 'at.js';
+
+
 export default {
     name: "NewReply",
     props: [],
@@ -43,6 +47,20 @@ export default {
         csrfToken() {
             return window.App.csrfToken;
         }
+    },
+    mounted() {
+        // todo 自动补齐姓名
+        // window.jQuery('#body').atwho({
+        //     at:"@",
+        //     delay:750,
+        //     callbacks: {
+        //         remoteFilter: function (query,callback) {
+        //             $.getJSON("/api/users",{name:query},function(usernames){
+        //                 callback(usernames)
+        //             });
+        //         }
+        //     }
+        // });
     },
     methods: {
         addReply() {

@@ -30,7 +30,7 @@
                 </div>
 
                 <div class="mt-2 text-gray-500" v-else>
-                    <p class="mt-2 text-gray-500">{{ body }}</p>
+                    <p class="mt-2 text-gray-500" v-html="body"></p>
                 </div>
                 <div class="mt-3 block relative" v-if="isOwner">
                     <!-- 修改 -->
