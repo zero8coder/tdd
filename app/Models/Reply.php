@@ -64,13 +64,14 @@ class Reply extends Model
 
     public function mentionedUsers()
     {
-        preg_match_all('/@([\w\-]+)/', $this->body, $matches);
+        preg_match_all('/@([\x{4e00}-\x{9fa5}\w]+)/u', $this->body, $matches);
         return $matches[1];
     }
 
     public function setBodyAttribute($body)
     {
-        $this->attributes['body'] = preg_replace('/@([\w\-]+)/','<a href="/profiles/$1">$0</a>', $body);
+        $this->attributes['body'] = preg_replace('/@([\x{4e00}-\x{9fa5}\w]+)/u','<a href="/profiles/$1">$0</a>', $body);
     }
+
 
 }
