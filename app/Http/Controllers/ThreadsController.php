@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Inspections\Spam;
 use App\Models\Channel;
 use App\Models\Thread;
+use App\Models\Trending;
 use App\Rules\SpamFree;
 use Illuminate\Http\Request;
 use App\Filters\ThreadsFilters;
-use Illuminate\Support\Facades\Redis;
 
 class ThreadsController extends Controller
 {
@@ -17,15 +17,19 @@ class ThreadsController extends Controller
         $this->middleware('auth')->except(['index', 'show']);
     }
 
-    public function index(Channel $channel, ThreadsFilters $filters)
+    public function index(Channel $channel, ThreadsFilters $filters, Trending $trending)
     {
         $threads = $this->getThreads($channel, $filters);
         if (request()->wantsJson()) {
             return $threads;
         }
-        $trending = array_map('json_decode',Redis::zrevrange('trending_threads',0,4));
 
-        return view('threads.index', compact('threads', 'trending'));
+        return view('threads.index',
+            [
+                'threads'  => $threads,
+                'trending' => $trending->get()
+            ]
+        );
     }
 
     protected function getThreads(Channel $channel, ThreadsFilters $filters)
@@ -38,18 +42,15 @@ class ThreadsController extends Controller
         return $threads->paginate(20);
     }
 
-    public function show($channel, Thread $thread)
+    public function show($channel, Thread $thread, Trending $trending)
     {
         $thread->create_at_see;
         if (auth()->check()) {
             auth()->user()->read($thread);
         }
-        Redis::zincrby('trending_threads', 1, json_encode([
-            'title' => $thread->title,
-            'path' => $thread->path()
-        ]));
+        $trending->push($thread);
         return view('threads.show', [
-            'thread'  => $thread,
+            'thread' => $thread,
         ]);
     }
 
@@ -82,7 +83,7 @@ class ThreadsController extends Controller
         ]);
 
         return redirect($thread->path())
-            ->with('flash','你的帖子已发布成功');
+            ->with('flash', '你的帖子已发布成功');
     }
 
     public function create()
