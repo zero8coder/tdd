@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Redis;
 
 /**
  * Thread
@@ -19,7 +20,8 @@ class Thread extends Model
         'user_id',
         'channel_id',
         'title',
-        'body'
+        'body',
+        'visits'
     ];
 
     protected $with = [
@@ -137,4 +139,10 @@ class Thread extends Model
         $key = $user->visitedThreadCacheKey($this);
         return $this->updated_at > cache($key);
     }
+
+    public function visits()
+    {
+        return new Visits($this);
+    }
+
 }

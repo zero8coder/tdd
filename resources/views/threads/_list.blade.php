@@ -21,6 +21,8 @@
                 </div>
                 <hr>
                 <p class="mt-2 text-gray-500">       {{ $thread->body }}</p>
+                <p class="mt-2 text-gray-500">浏览{{ $thread->visits }}</p>
+
             </article>
         </div>
     </div>

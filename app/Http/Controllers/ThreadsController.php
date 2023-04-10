@@ -48,7 +48,10 @@ class ThreadsController extends Controller
         if (auth()->check()) {
             auth()->user()->read($thread);
         }
+        // 记录热门程度
         $trending->push($thread);
+        // 记录浏览次数
+        $thread->increment('visits');
         return view('threads.show', [
             'thread' => $thread,
         ]);
