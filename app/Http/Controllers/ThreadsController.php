@@ -9,6 +9,7 @@ use App\Models\Trending;
 use App\Rules\SpamFree;
 use Illuminate\Http\Request;
 use App\Filters\ThreadsFilters;
+use Illuminate\Support\Str;
 
 class ThreadsController extends Controller
 {
@@ -83,6 +84,7 @@ class ThreadsController extends Controller
             'channel_id' => request('channel_id'),
             'title'      => request('title'),
             'body'       => request('body'),
+            'slug'       => request('title')
         ]);
 
         return redirect($thread->path())

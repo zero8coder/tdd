@@ -105,6 +105,29 @@ class CreateThreadsTest extends TestCase
 
     /**
      * @test
+     *一个帖子要求一个唯一概括
+     */
+    public function a_thread_requires_a_unique_slug()
+    {
+        $this->signIn();
+        $thread = Thread::factory()->create([
+            'title' => 'Foo Title',
+            'slug' => 'foo-title'
+        ]);
+
+        $this->assertEquals($thread->slug, 'foo-title');
+
+        $this->post(route('threads'), $thread->toArray());
+        // 相同话题的 Slug 后缀会加 1，即 foo-title-2
+        $this->assertTrue(Thread::where('slug', 'foo-title-2')->exists());
+
+        $this->post(route('threads'), $thread->toArray());
+        // 相同话题的 Slug 后缀会加 1，即 foo-title-3
+        $this->assertTrue(Thread::where('slug', 'foo-title-3')->exists());
+    }
+
+    /**
+     * @test
      * 登录用户可以删除自己的帖子
      */
     public function authorized_users_can_delete_threads()

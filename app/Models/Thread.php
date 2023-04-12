@@ -6,6 +6,7 @@ use App\Events\ThreadReceivedNewReply;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Str;
 
 /**
  * Thread
@@ -21,7 +22,8 @@ class Thread extends Model
         'channel_id',
         'title',
         'body',
-        'visits'
+        'visits',
+        'slug'
     ];
 
     protected $with = [
@@ -43,10 +45,15 @@ class Thread extends Model
 
     }
 
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
     // 帖子的路径
     public function path()
     {
-        return "/threads/{$this->channel->slug}/{$this->id}";
+        return "/threads/{$this->channel->slug}/{$this->slug}";
     }
 
     // 帖子的回复
@@ -145,4 +152,30 @@ class Thread extends Model
         return new Visits($this);
     }
 
+    public function setSlugAttribute($value)
+    {
+        $slug = Str::slug($value);
+        if (static::where('slug', $slug)->exists()) {
+            $slug = $this->incrementSlug($slug);
+        }
+
+        $this->attributes['slug'] = $slug;
+    }
+
+    public function incrementSlug($slug)
+    {
+        // 取出最大 id 话题的 Slug 值
+        $max = static::where('title', $this->title)->latest('id')->value('slug');
+
+        // 如果最后一个字符为数字
+        if(is_numeric($max[-1])) {
+            // 正则匹配出末尾的数字，然后自增 1
+            return preg_replace_callback('/(\d+)$/',function ($matches) {
+                return $matches[1]+1;
+            },$max);
+        }
+
+        // 否则后缀数字为 2
+        return "{$slug}-2";
+    }
 }
