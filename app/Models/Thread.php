@@ -24,7 +24,8 @@ class Thread extends Model
         'title',
         'body',
         'visits',
-        'slug'
+        'slug',
+        'best_reply_id'
     ];
 
     protected $with = [
@@ -167,5 +168,10 @@ class Thread extends Model
         }
 
         $this->attributes['slug'] = $slug;
+    }
+
+    public function markBestReply(Reply $reply)
+    {
+        $this->update(['best_reply_id' => $reply->id]);
     }
 }

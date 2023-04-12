@@ -73,5 +73,10 @@ class Reply extends Model
         $this->attributes['body'] = preg_replace('/@([\x{4e00}-\x{9fa5}\w]+)/u','<a href="/profiles/$1">$0</a>', $body);
     }
 
+    public function isBest()
+    {
+        return $this->thread->best_reply_id == $this->id;
+    }
+
 
 }

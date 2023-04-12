@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\UserAvatarController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Auth\RegisterConfirmationController;
+use App\Http\Controllers\BestRepliesController;
 use App\Http\Controllers\FavoritesController;
 use App\Http\Controllers\ProfilesController;
 use App\Http\Controllers\RepliesController;
@@ -23,6 +24,7 @@ Route::get('/threads/{channel?}', [ThreadsController::class, 'index'])->name('th
 Route::post('/threads', [ThreadsController::class, 'store'])->middleware('must-be-confirmed');
 
 Route::get('/threads/{channel}/{thread}/replies',[RepliesController::class, 'index']);
+Route::post('/replies/{reply}/best', [BestRepliesController::class, 'store'])->name('best-replies.store');
 Route::patch('/replies/{reply}', [RepliesController::class, 'update']);
 Route::delete('/replies/{reply}', [RepliesController::class, 'destroy']);
 
