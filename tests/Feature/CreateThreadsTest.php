@@ -6,6 +6,7 @@ use App\Models\Activity;
 use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
+use App\Models\User;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
@@ -20,6 +21,18 @@ class CreateThreadsTest extends TestCase
         $this->get('/threads/create')->assertRedirect('/login');
         $this->post('/threads')->assertRedirect('/login');
 
+    }
+
+    /**
+     * @test
+     * 发布帖子前必须先确认邮箱
+     */
+    public function authenticated_users_must_first_confirm_their_email_address_before_creating_threads()
+    {
+        $user = User::factory()->create(['confirmed' => false]);
+        $this->publishThread([], $user)
+            ->assertRedirect('/threads')
+            ->assertSessionHas('flash', '你先确认邮箱');
     }
 
     /**
@@ -47,9 +60,9 @@ class CreateThreadsTest extends TestCase
     }
 
     // 发布帖子
-    public function publishThread($overrides = [])
+    public function publishThread($overrides = [], $user = null)
     {
-        $this->signIn();
+        $this->signIn($user);
         $thread = Thread::factory()->make($overrides);
         return $this->post('/threads', $thread->toArray());
     }

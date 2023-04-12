@@ -42,11 +42,19 @@ class User extends Authenticatable
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
+        'confirmed' => 'boolean'
     ];
 
     protected $appends = [
         'user_avatar'
     ];
+
+    public function confirm()
+    {
+        $this->confirmed = true;
+        $this->confirmation_token = null;
+        $this->save();
+    }
 
     /**
      * 获取该模型的路由的自定义键名
@@ -104,5 +112,7 @@ class User extends Authenticatable
     {
         return $this->avatar();
     }
+
+
 
 }
