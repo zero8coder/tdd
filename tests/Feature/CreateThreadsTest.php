@@ -7,6 +7,7 @@ use App\Models\Channel;
 use App\Models\Reply;
 use App\Models\Thread;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Tests\TestCase;
 
 class CreateThreadsTest extends TestCase
@@ -110,20 +111,11 @@ class CreateThreadsTest extends TestCase
     public function a_thread_requires_a_unique_slug()
     {
         $this->signIn();
-        $thread = Thread::factory()->create([
-            'title' => 'Foo Title',
-            'slug' => 'foo-title'
-        ]);
-
-        $this->assertEquals($thread->slug, 'foo-title');
-
-        $this->post(route('threads'), $thread->toArray());
-        // 相同话题的 Slug 后缀会加 1，即 foo-title-2
-        $this->assertTrue(Thread::where('slug', 'foo-title-2')->exists());
-
-        $this->post(route('threads'), $thread->toArray());
-        // 相同话题的 Slug 后缀会加 1，即 foo-title-3
-        $this->assertTrue(Thread::where('slug', 'foo-title-3')->exists());
+        Thread::factory()->count(2)->create();
+        $thread = Thread::factory()->create(['title' => 'Foo Title']);
+        $this->assertEquals($thread->fresh()->slug, 'foo-title');
+        $thread = $this->postJson(route('threads'),$thread->toArray())->json();
+        $this->assertEquals("foo-title-{$thread['id']}", $thread['slug']);
     }
 
     /**
@@ -141,6 +133,18 @@ class CreateThreadsTest extends TestCase
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
 
         $this->assertEquals(0, Activity::count());
+    }
+
+    /**
+     * @test
+     *
+     */
+    public function a_thread_with_a_title_that_ends_in_a_number_should_generate_the_proper_slug()
+    {
+        $this->signIn();
+        $thread = Thread::factory()->create(['title' => 'Something 24']);
+        $thread = $this->postJson(route('threads'), $thread->toArray())->json();
+        $this->assertEquals("something-24-{$thread['id']}", $thread['slug']);
     }
 
     /**
