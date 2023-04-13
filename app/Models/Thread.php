@@ -25,7 +25,8 @@ class Thread extends Model
         'body',
         'visits',
         'slug',
-        'best_reply_id'
+        'best_reply_id',
+        'locked'
     ];
 
     protected $with = [
@@ -85,6 +86,11 @@ class Thread extends Model
 
         return $reply;
 
+    }
+
+    public function lock()
+    {
+        $this->update(['locked' => true]);
     }
 
     // 通知所有订阅

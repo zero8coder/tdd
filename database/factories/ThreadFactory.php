@@ -24,7 +24,8 @@ class ThreadFactory extends Factory
             'title' => $title,
             'body' => $this->faker->paragraph,
             'visits' => 0,
-            'slug' => Str::slug($title)
+            'slug' => Str::slug($title),
+            'locked' => false
         ];
     }
 }
