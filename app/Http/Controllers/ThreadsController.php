@@ -69,9 +69,9 @@ class ThreadsController extends Controller
         return redirect('/threads');
     }
 
-    public function store(Request $request, Spam $spam)
+    public function store( Spam $spam)
     {
-        $this->validate($request, [
+        request()->validate( [
             'title'      => 'required',
             'body'       => ['required', new SpamFree],
             'channel_id' => 'required|exists:channels,id'
@@ -118,8 +118,17 @@ class ThreadsController extends Controller
             if (! auth()->user()->isAdmin()) {
                 return response('', 403);
             }
-
         }
+
+        // 应用授权策略
+        $this->authorize('update',$thread);
+        // 验证规则
+        $thread->update(request()->validate([
+            'title' => ['required', new SpamFree],
+            'body' => ['required', new SpamFree],
+        ]));
+
+        return $thread;
     }
 
 }

@@ -42,7 +42,7 @@ class RepliesController extends Controller
     public function update(Reply $reply)
     {
         $this->authorize('update', $reply);
-        $this->validate(request(), ['body' => ['required', new SpamFree]]);
+        request()->validate(['body' => ['required', new SpamFree]]);
         $reply->update(['body' => request('body')]);
         return response()->json(['code' => 200, 'message' => '成功', 'data' => 1]);
     }
