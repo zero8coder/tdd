@@ -23,11 +23,16 @@
                     <p class="mt-2 text-gray-500">{{ thread.body }}</p>
                     <span class="mt-3">
                         <subscribe-button :isSubscribe="thread.isSubscribedTo"></subscribe-button>
+                    <button class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                            v-if="isAdmin" @click="toggleLock" v-text="locked ? '解锁' : '锁定'">
+                    </button>
                     </span>
                 </article>
             </div>
         </div>
     </div>
+    <replies :locked="locked"> </replies>
+
 </template>
 
 <script>
@@ -39,6 +44,7 @@ export default {
     components: {SubscribeButton},
     data() {
         return {
+            locked: this.thread.locked,
             can_deleting: true,
         }
     },
@@ -48,13 +54,22 @@ export default {
         },
         csrfToken() {
             return window.App.csrfToken;
+        },
+        isAdmin() {
+            return true;
+            // return window.App.signIn && window.App.user.name === '浩忠';
         }
     },
 
     methods: {
         destroy() {
             axios.delete('/threads/' + this.thread.channel.name + '/' + this.thread.id);
+        },
+        toggleLock() {
+            axios[this.locked ? 'delete' : 'post']('/locked-threads/' + this.thread.slug);
+            this.locked = ! this.locked;
         }
+
     }
 }
 </script>

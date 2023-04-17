@@ -100,5 +100,14 @@ class ThreadsController extends Controller
         return view('threads.create');
     }
 
+    public function update($channelId,Thread $thread)
+    {
+        if (request()->has('locked')) {
+            if (! auth()->user()->isAdmin()) {
+                return response('', 403);
+            }
+
+        }
+    }
 
 }

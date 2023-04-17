@@ -17,4 +17,15 @@ abstract class TestCase extends BaseTestCase
         $this->actingAs($user);
         return $this;
     }
+
+    protected function getAdminUser()
+    {
+        return User::factory()->create(['name' => '浩忠']);
+    }
+
+    protected  function signInAdmin()
+    {
+        $this->actingAs($this->getAdminUser());
+        return $this;
+    }
 }

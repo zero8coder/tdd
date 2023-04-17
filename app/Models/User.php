@@ -113,6 +113,9 @@ class User extends Authenticatable
         return $this->avatar();
     }
 
-
+    public function isAdmin()
+    {
+        return in_array($this->name, ['浩忠']);
+    }
 
 }

@@ -5,7 +5,12 @@
         </div>
     </div>
     <paginator :dataSet="dataSet" @changed="fetch"></paginator>
-    <new-reply  @created="add"></new-reply>
+    <div class="md:container md:mx-auto"  v-if="locked">
+        <p class="text-center">
+            锁定不能回复
+        </p>
+    </div>
+    <new-reply v-else  @created="add"></new-reply>
 </template>
 
 <script>
@@ -13,7 +18,7 @@ import Reply from './Reply';
 import collection from '../mixins/Collection';
 
 export default {
-    props: ['replies'],
+    props: ['replies', 'locked'],
     components: {Reply},
     mixins: [collection],
 

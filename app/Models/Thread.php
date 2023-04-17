@@ -38,6 +38,10 @@ class Thread extends Model
         'isSubscribedTo'
     ];
 
+    protected $casts = [
+        'locked' => 'boolean'
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -86,11 +90,6 @@ class Thread extends Model
 
         return $reply;
 
-    }
-
-    public function lock()
-    {
-        $this->update(['locked' => true]);
     }
 
     // 通知所有订阅
