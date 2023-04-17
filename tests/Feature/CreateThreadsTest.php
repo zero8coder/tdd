@@ -89,6 +89,16 @@ class CreateThreadsTest extends TestCase
             ->assertStatus(302);
     }
 
+//    /**
+//     * @test
+//     * 发帖需要增加人机验证的测试
+//     */
+//    public function a_thread_requires_recaptcha_verification()
+//    {
+//        $this->publishThread(['g-recaptcha-response' => 'test'])
+//            ->assertSessionHasErrors('g-recaptcha-response');
+//    }
+
     /**
      * @test
      * 一个帖子有一个频道

@@ -10,6 +10,7 @@ use App\Rules\SpamFree;
 use Illuminate\Http\Request;
 use App\Filters\ThreadsFilters;
 use Illuminate\Support\Str;
+use Zttp\Zttp;
 
 class ThreadsController extends Controller
 {
@@ -78,6 +79,17 @@ class ThreadsController extends Controller
             'channel_id.required' => '频道 必选',
             'channel_id.exists'   => '频道 不存在'
         ]);
+
+//        $response = Zttp::asFormParams()->post('https://www.google.com/recaptcha/api/siteverify',[
+//            'secret' => config('services.recaptcha.secret'),
+//            'response' => $request->input('g-recaptcha-response'),
+//            'remoteip' => $_SERVER['REMOTE_ADDR']
+//        ]);
+//
+//        if (! $response->json()['success']) {
+//            throw new \Exception('Recaptcha 失败');
+//        }
+
 
         $thread = Thread::create([
             'user_id'    => auth()->id(),
