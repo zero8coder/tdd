@@ -28,9 +28,11 @@
     "dependencies": {
         "@headlessui/vue": "^1.7.12",
         "@heroicons/vue": "^2.0.16",
+        "algoliasearch": "^4.17.0",
         "at.js": "^1.5.4",
         "cross-env": "^7.0.3",
         "jq": "^1.7.2",
-        "jquery": "^3.6.4"
+        "jquery": "^3.6.4",
+        "vue-instantsearch": "^4.8.10"
     }
 }

@@ -14,6 +14,9 @@ import replies from './components/Replies';
 import newReply from './components/NewReply';
 import paginator from './components/Paginator.vue';
 import avatarForm from './components/AvatarForm.vue';
+import InstantSearch from 'vue-instantsearch/vue3/es';
+import scan from './components/Scan.vue';
+
 
 const app = Vue.createApp({
 
@@ -26,4 +29,6 @@ app.component('flash', flash)
     .component('new-reply', newReply)
     .component('paginator', paginator)
     .component('avatar-form', avatarForm)
+    .component('scan', scan)
+    .use(InstantSearch)
     .mount('#app');
